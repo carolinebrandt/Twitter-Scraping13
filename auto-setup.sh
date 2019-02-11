@@ -9,6 +9,5 @@ sudo pip install virtualenv
 virtualenv venv
 source venv/bin/activate
 
-pip install -r 
-sudo pip install pip-requirements.txt
+pip install -r pip-requirements.txt
 nohup python uppsala_aws.py &
