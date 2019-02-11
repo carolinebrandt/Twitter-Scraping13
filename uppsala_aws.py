@@ -19,17 +19,23 @@ auth = OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_secret)
 
 api = tweepy.API(auth)
-
+  
 def process_or_store(tweet):
-  try:
-  response = firehose_client.put_record(
-  DeliveryStreamName='uppsala-twitter-stream-egypt', 
-  Record={ 
-    'Data': json.dumps(tweet, ensure_ascii=False, encoding="utf-8")+'\n' 
-    } ) 
-  logging.info(response)
-  except Exception: 
-  logging.exception("Problem pushing to firehose")    
+    #print(json.dumps(tweet))
+    #f = codecs.open('tweetDump.json', 'a','utf-8') #writing to local file.
+    try:
+        response = firehose_client.put_record(
+            DeliveryStreamName='uppsala-twitter-stream-egypt',
+            Record={
+                'Data': json.dumps(tweet, ensure_ascii=False, encoding="utf-8")+'\n'
+            }
+        )
+        logging.info(response)
+    except Exception:
+        logging.exception("Problem pushing to firehose")
+    #f.write(json.dumps(tweet, ensure_ascii=False, encoding="utf-8")+'\n')
+    #f.close()  
+  
 
 class MyListener(StreamListener):
   def on_data(self, data):
