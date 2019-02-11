@@ -24,8 +24,8 @@ class StreamListener(tweepy.StreamListener):
     stop_time = dt.datetime.now() + dt.timedelta(minutes=1)  # How long we're going to be connected to the firehose
 
     def on_success(self, data):
-        if dt.datetime.now() > self.stop_time:  # Disconnect from firehose at time = t 
-            self.disconnect() 
+#        if dt.datetime.now() > self.stop_time:  # Disconnect from firehose at time = t 
+#            self.disconnect() 
         print(data)
 
     def on_error(self, status_code, data):
@@ -52,9 +52,13 @@ def process_or_store(tweet):
     for tweet in streamConnect(consumer_key, consumer_secret, access_token, access_secret):
         process_or_store(tweet._json) 
     
-firehose_client = boto3.client('firehose', region_name="us-west-2") 
+firehose_client = boto3.client('firehose', region_name="us-east-1") 
 LOG_FILENAME = '/tmp/DataAnalysisOnAWS.log' 
 logging.basicConfig(filename=LOG_FILENAME,level=logging.DEBUG)  
 
-
+startTime=time.time()
+while True:
+	if __name__ == "__main__":
+	    main()
+	time.sleep(1800.0 - time.time() % 60)
 
