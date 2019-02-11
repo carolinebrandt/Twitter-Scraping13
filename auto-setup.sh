@@ -10,4 +10,4 @@ virtualenv venv
 source venv/bin/activate
 
 pip install -r pip-requirements.txt
-nohup python uppsala_aws.py &
+python uppsala_aws.py 
