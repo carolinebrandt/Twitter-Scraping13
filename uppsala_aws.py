@@ -21,35 +21,35 @@ auth.set_access_token(access_token, access_secret)
 api = tweepy.API(auth)
 
 def process_or_store(tweet):
- try:
+  try:
   response = firehose_client.put_record(
   DeliveryStreamName='veera-twitter-data-stream', 
   Record={ 
-   'Data': json.dumps(tweet, ensure_ascii=False, encoding="utf-8")+'\n' 
-   } ) 
+    'Data': json.dumps(tweet, ensure_ascii=False, encoding="utf-8")+'\n' 
+    } ) 
   logging.info(response)
- except Exception: 
+  except Exception: 
   logging.exception("Problem pushing to firehose")    
 
 
-class StreamListener(tweepy.StreamListener):
-
-    stop_time = dt.datetime.now() + dt.timedelta(minutes=1)  # How long we're going to be connected to the firehose
-
-    def on_success(self, data):
-#        if dt.datetime.now() > self.stop_time:  # Disconnect from firehose at time = t 
-#            self.disconnect() 
-        print(data)
-        process_or_store(json.dumps(data)) 
-
-    def on_error(self, status_code, data):
-        process_or_store(json.dumps(data))
+class MyListener(StreamListener):
+ 
+    def on_data(self, data):
+        try:
+            with open('python.json', 'a') as f:
+                process_or_store(json.dumps(data)) 
+                return True
+        except BaseException as e:
+            print("Error on_data: %s" % str(e))
+        return True
+ 
+    def on_error(self, status):
         self.disconnect() 
-
-
+        return True
+ 
 def main():
-    stream = Stream(auth, StreamListener())
-    stream.filter(locations=[22.0, 31.8330854, 24.6499112, 37.1153517], stall_warnings=True)
+    twitter_stream = Stream(auth, MyListener())
+    twitter_stream.filter(locations=[22.0, 31.8330854, 24.6499112, 37.1153517], stall_warnings=True)
     
 firehose_client = boto3.client('firehose', region_name="us-east-1") 
 LOG_FILENAME = '/tmp/DataAnalysisOnAWS.log' 
@@ -58,7 +58,8 @@ logging.basicConfig(filename=LOG_FILENAME,level=logging.DEBUG)
 startTime=time.time()
 while True:
 	if __name__ == "__main__":
-	    main(consumer_key, consumer_secret, access_token, access_secret)
+	    main()
 	time.sleep(1800.0 - time.time() % 60)
 	
+
 
