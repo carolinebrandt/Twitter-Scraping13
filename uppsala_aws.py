@@ -37,7 +37,7 @@ class MyListener(StreamListener):
     def on_data(self, data):
         try:
             with open('python.json', 'a') as f:
-                process_or_store(json.dumps(data)) 
+                process_or_store(data)
                 return True
         except BaseException as e:
             print("Error on_data: %s" % str(e))
