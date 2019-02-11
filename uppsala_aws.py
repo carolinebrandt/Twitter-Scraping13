@@ -31,21 +31,19 @@ def process_or_store(tweet):
   except Exception: 
   logging.exception("Problem pushing to firehose")    
 
-
 class MyListener(StreamListener):
- 
-    def on_data(self, data):
-        try:
-            with open('python.json', 'a') as f:
-                process_or_store(data)
-                return True
-        except BaseException as e:
-            print("Error on_data: %s" % str(e))
+  def on_data(self, data):
+    try:
+      with open('python.json', 'a') as f:
+        process_or_store(data)
         return True
+    except BaseException as e:
+      print("Error on_data: %s" % str(e))
+      return True
  
-    def on_error(self, status):
-        self.disconnect() 
-        return True
+  def on_error(self, status):
+    self.disconnect() 
+    return True
 
 
 firehose_client = boto3.client('firehose', region_name="us-east-1") 
@@ -53,15 +51,15 @@ LOG_FILENAME = '/tmp/DataAnalysisOnAWS.log'
 logging.basicConfig(filename=LOG_FILENAME,level=logging.DEBUG)  
  
 def main():
-    twitter_stream = Stream(auth, MyListener())
-    twitter_stream.filter(locations=[22.0, 31.8330854, 24.6499112, 37.1153517], stall_warnings=True)
+  twitter_stream = Stream(auth, MyListener())
+  twitter_stream.filter(locations=[22.0, 31.8330854, 24.6499112, 37.1153517], stall_warnings=True)
     
 
 startTime=time.time()
 while True:
-	if __name__ == "__main__":
-	    main()
-	time.sleep(1800.0 - time.time() % 60)
-	
+  if __name__ == "__main__":
+    main()
+  time.sleep(1800.0 - time.time() % 60)
+  
 
 
