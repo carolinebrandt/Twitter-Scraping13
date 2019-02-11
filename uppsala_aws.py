@@ -23,7 +23,7 @@ api = tweepy.API(auth)
 def process_or_store(tweet):
   try:
   response = firehose_client.put_record(
-  DeliveryStreamName='veera-twitter-data-stream', 
+  DeliveryStreamName='uppsala-twitter-stream-egypt', 
   Record={ 
     'Data': json.dumps(tweet, ensure_ascii=False, encoding="utf-8")+'\n' 
     } ) 
