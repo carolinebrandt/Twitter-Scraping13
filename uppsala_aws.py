@@ -48,7 +48,7 @@ def process_or_store(tweet):
  except Exception: 
   logging.exception("Problem pushing to firehose")    
 
- def main():
+def main():
     for tweet in streamConnect(consumer_key, consumer_secret, access_token, access_secret):
         process_or_store(tweet._json) 
     
