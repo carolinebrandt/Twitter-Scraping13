@@ -20,6 +20,10 @@ auth.set_access_token(access_token, access_secret)
 
 api = tweepy.API(auth)
 
+firehose_client = boto3.client('firehose', region_name="us-east-1") 
+LOG_FILENAME = '/tmp/DataAnalysisOnAWS.log' 
+logging.basicConfig(filename=LOG_FILENAME,level=logging.DEBUG)  
+
 def process_or_store(tweet):
   try:
   response = firehose_client.put_record(
@@ -51,9 +55,6 @@ def main():
     twitter_stream = Stream(auth, MyListener())
     twitter_stream.filter(locations=[22.0, 31.8330854, 24.6499112, 37.1153517], stall_warnings=True)
     
-firehose_client = boto3.client('firehose', region_name="us-east-1") 
-LOG_FILENAME = '/tmp/DataAnalysisOnAWS.log' 
-logging.basicConfig(filename=LOG_FILENAME,level=logging.DEBUG)  
 
 startTime=time.time()
 while True:
