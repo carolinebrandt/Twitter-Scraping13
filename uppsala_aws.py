@@ -1,4 +1,5 @@
 import tweepy 
+from tweepy import Stream
 from tweepy import StreamListener 
 import datetime as dt
 import json
@@ -38,21 +39,17 @@ class StreamListener(tweepy.StreamListener):
     def on_success(self, data):
 #        if dt.datetime.now() > self.stop_time:  # Disconnect from firehose at time = t 
 #            self.disconnect() 
+        print(data)
         process_or_store(json.dumps(data)) 
 
     def on_error(self, status_code, data):
         process_or_store(json.dumps(data))
         self.disconnect() 
 
-def streamConnect(CONSUMERKEY, CONSUMERSECRET, ACCESSTOKEN, ACCESSSECRET):
-    stream_listener = StreamListener()
-    stream = tweepy.Stream(auth=auth, listener=stream_listener)
-    stream.filter(locations=[22.0, 31.8330854, 24.6499112, 37.1153517], stall_warnings=True)
-    
 
-def main(CONSUMERKEY, CONSUMERSECRET, ACCESSTOKEN, ACCESSSECRET):
-    stream = MyStreamer(CONSUMERKEY, CONSUMERSECRET, ACCESSTOKEN, ACCESSSECRET)
-    stream.statuses.filter(locations=[22.0, 31.8330854, 24.6499112, 37.1153517])
+def main():
+    stream = Stream(auth, StreamListener())
+    stream.filter(locations=[22.0, 31.8330854, 24.6499112, 37.1153517], stall_warnings=True)
     
 firehose_client = boto3.client('firehose', region_name="us-east-1") 
 LOG_FILENAME = '/tmp/DataAnalysisOnAWS.log' 
@@ -63,4 +60,5 @@ while True:
 	if __name__ == "__main__":
 	    main(consumer_key, consumer_secret, access_token, access_secret)
 	time.sleep(1800.0 - time.time() % 60)
+	
 
