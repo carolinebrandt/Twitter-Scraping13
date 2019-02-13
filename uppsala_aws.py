@@ -58,7 +58,7 @@ logging.basicConfig(filename=LOG_FILENAME,level=logging.DEBUG)
  
 def main():
   twitter_stream = Stream(auth, MyListener())
-  twitter_stream.filter(locations=[22.0, 31.8330854, 24.6499112, 37.1153517], stall_warnings=True)
+  twitter_stream.sample()
     
 
 main()
