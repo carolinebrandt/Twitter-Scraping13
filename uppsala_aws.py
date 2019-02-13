@@ -59,14 +59,11 @@ logging.basicConfig(filename=LOG_FILENAME,level=logging.DEBUG)
 def main():
   twitter_stream = Stream(auth, MyListener())
   twitter_stream.sample()
- 
-main()
 
-#startTime=time.time()
-#while True:
-#  if __name__ == "__main__":
-#    main()
-#  time.sleep(1800.0 - time.time() % 60)
+startTime=time.time()
+while True:
+  if __name__ == "__main__":
+    main()
   
 
 
