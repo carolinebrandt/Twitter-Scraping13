@@ -60,10 +60,7 @@ def main():
   twitter_stream = Stream(auth, MyListener())
   twitter_stream.sample()
 
-startTime=time.time()
-while True:
-  if __name__ == "__main__":
-    main()
+main()
   
 
 
