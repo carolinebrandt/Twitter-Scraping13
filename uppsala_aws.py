@@ -27,7 +27,7 @@ def process_or_store(tweet):
         response = firehose_client.put_record(
             DeliveryStreamName='uppsala-twitter-one-hour',
             Record={
-                'Data': json.dumps(tweet, ensure_ascii=False, encoding="utf-8")+'\n' 
+                'Data': json.dumps(tweet, ensure_ascii=False, encoding="utf-8")+'\n'
             }
         )
         logging.info(response)
@@ -58,9 +58,8 @@ logging.basicConfig(filename=LOG_FILENAME,level=logging.DEBUG)
  
 def main():
   twitter_stream = Stream(auth, MyListener())
-  twitter_stream.sample()
+  twitter_stream.filter(locations=[22.0, 31.8330854, 24.6499112, 37.1153517], stall_warnings=True)
+    
 
 main()
   
-
-
