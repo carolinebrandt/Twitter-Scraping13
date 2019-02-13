@@ -27,7 +27,7 @@ def process_or_store(tweet):
         response = firehose_client.put_record(
             DeliveryStreamName='uppsala-twitter-one-hour',
             Record={
-                'Data': tweet
+                'Data': json.dumps(tweet, ensure_ascii=False, encoding="utf-8")+'\n' 
             }
         )
         logging.info(response)
