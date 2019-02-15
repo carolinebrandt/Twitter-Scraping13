@@ -60,9 +60,9 @@ def main():
   twitter_stream = Stream(auth, MyListener())
   twitter_stream.sample()
     
-startTime=time.time()startTime=time.time()
-while True: 
- if __name__ == "__main__":
- main()
- time.sleep(900.0 - time.time() % 60)
+startTime=time.time()
+while True:
+	if __name__ == "__main__":
+	    main()
+	time.sleep(1800.0 - time.time() % 60)
   
