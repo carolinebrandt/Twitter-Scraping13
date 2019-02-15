@@ -25,7 +25,7 @@ def process_or_store(tweet):
     #f = codecs.open('tweetDump.json', 'a','utf-8') #writing to local file.
     try:
         response = firehose_client.put_record(
-            DeliveryStreamName='uppsala-twitter-one-hour',
+            DeliveryStreamName='practice_for_uppsala',
             Record={
                 'Data': json.dumps(tweet, ensure_ascii=False, encoding="utf-8")+'\n'
             }
@@ -60,6 +60,9 @@ def main():
   twitter_stream = Stream(auth, MyListener())
   twitter_stream.sample()
     
-
-main()
+startTime=time.time()startTime=time.time()
+while True: 
+ if __name__ == "__main__":
+ main()
+ time.sleep(900.0 - time.time() % 60)
   
